@@ -303,11 +303,6 @@ namespace Blackjack
         {
             while (true)
             {
-                var doesPlayersHaveMoney = !_players.Exists(p => p.Money > 0);
-                
-                if(!doesPlayersHaveMoney)
-                    return;
-                
                 switch (_gameState)
                 {
                     case GameState.FillPlayers:
@@ -330,6 +325,11 @@ namespace Blackjack
                         RestartGame();
                         break;
                 }
+                
+                var doesPlayersHaveMoney = _players.Exists(p => p.Money > 0);
+                
+                if(!doesPlayersHaveMoney)
+                    return;
             }
         }
     }
