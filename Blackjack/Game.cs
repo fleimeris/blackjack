@@ -139,8 +139,18 @@ namespace Blackjack
                 Console.WriteLine($"Player {player.Name} how much do you want to bet? (Balance: {player.Money})");
                 var betValue = Console.ReadLine();
                 var bet = float.Parse(betValue);
-                player.Bet = bet;
-                player.Money -= bet;
+                
+                if (bet > player.Money || bet <= 0)
+                {
+                    player.IsLoser = true;
+                    player.IsStanding = true;
+                    player.IsPlaying = false;
+                }
+                else
+                {
+                    player.Bet = bet;
+                    player.Money -= bet;
+                }
             }
 
             _gameState = GameState.GiveInitialCardsCards;
@@ -293,6 +303,11 @@ namespace Blackjack
         {
             while (true)
             {
+                var doesPlayersHaveMoney = !_players.Exists(p => p.Money > 0);
+                
+                if(!doesPlayersHaveMoney)
+                    return;
+                
                 switch (_gameState)
                 {
                     case GameState.FillPlayers:
